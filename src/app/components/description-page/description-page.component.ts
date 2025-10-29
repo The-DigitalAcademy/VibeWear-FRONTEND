@@ -56,6 +56,22 @@ export class DescriptionPageComponent implements OnInit {
 
   viewProduct(id: number) {
     // Navigate to the product's description page
-    this.router.navigate(['/products', id]);
+    this.router.navigate(['/products-page', id]);
   }
+
+//go to the product page
+  goToProducts() {
+    const modalElement = document.getElementById('new');
+    if (modalElement) {
+      const modal = bootstrap.Modal.getInstance(modalElement);
+      modal?.hide();
+    }
+    this.router.navigate(['/products']);
+  }
+
+  Product(id: number) {
+    // Navigate to the product's description page
+    this.router.navigate(['/products-page', id]);
+  }
+  
 }
