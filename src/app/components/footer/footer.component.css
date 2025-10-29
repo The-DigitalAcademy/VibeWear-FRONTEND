@@ -30,14 +30,14 @@
 
 .footer .form-control:focus {
   background-color: #495057;
-  border-color: #0d6efd;
+  border-color: #7b7d80;
   color: #fff;
   box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
 }
 
 .footer .btn-primary {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+  background-color: #878b92;
+  border-color: #999ca2;
 }
 
 .footer .btn-primary:hover {
