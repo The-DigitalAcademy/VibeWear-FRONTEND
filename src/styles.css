@@ -1,0 +1,25 @@
+/* You can add global styles to this file, and also import other style files */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}

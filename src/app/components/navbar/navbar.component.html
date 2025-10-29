@@ -1,0 +1,38 @@
+<nav class="navbar">
+  <div class="nav-brand">
+    <a routerLink="/">VibeWear</a>
+  </div>
+
+  <div class="search-container">
+    <input type="text" placeholder="Search products..."[(ngModel)]="searchTerm" (blur)="hideResults()">
+    <button class="search-btn" (click)="onSearch()">🔍</button>
+    <div class="search-results" *ngIf="showResults">
+      <div *ngIf="searchResults.length > 0">
+        <div class="result-item" *ngFor="let product of searchResults.slice(0, 8)" (click)="goToProduct(product.id)">
+          <img [src]="product.image" [alt]="product.title">
+          <div class="product-info">
+            <span class="product-title">{{ product.title }}</span>
+            <span class="product-category">{{ product.category }}</span>
+          </div>
+          <span class="price">R{{ product.price }}</span>
+        </div>
+      </div>
+      <div *ngIf="searchResults.length === 0" class="no-results">
+        Product not found
+      </div>
+    </div>
+  </div>
+  
+  <div class="nav-links">
+    <a routerLink="/">Home</a>
+    <a routerLink="/products">Products</a>
+    <a class="nav-link position-relative" routerLink="/cart">
+      <i class="bi bi-cart3"></i> Cart
+      <span *ngIf="cartItemCount > 0" 
+            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        {{ cartItemCount }}
+        <span class="visually-hidden">items in cart</span>
+      </span>
+    </a>
+  </div>
+</nav>
