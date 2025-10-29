@@ -1,3 +1,4 @@
+<div style="background-color: #f2f2f2; height:200%; margin: 50px; border-radius: 1rem; padding: 1px;" >
 <div class="container my-5" *ngIf="product; else loading">
   <div class="row">
     <!-- Product Image -->
@@ -17,7 +18,7 @@
       <h4 class="text-primary mb-3">R{{ product.price }}</h4>
       <p class="mb-4">{{ product.description }}</p>
 
-      <button class="btn btn-success me-2" (click)="addToCart(product)">
+      <button class="btn btn-success me-2" class="btn btn-outline-success" (click)="addToCart(product)">
         Add to Cart
       </button>
       <button class="btn btn-outline-secondary" (click)="router.navigate(['/products'])">
@@ -85,9 +86,11 @@
         </p>
       </div>
       <div class="modal-footer d-flex justify-content-center">
-        <button
+        <button 
           class="btn btn-outline-secondary"
           data-bs-dismiss="modal"
+                      (click)="goToProducts()"
+
         >
           Continue Shopping
         </button>
@@ -100,4 +103,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>

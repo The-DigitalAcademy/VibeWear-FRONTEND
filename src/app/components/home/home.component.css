@@ -1,6 +1,7 @@
 .home-container {
   position: relative;
   min-height: 80vh;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,13 +29,13 @@
 }
 
 .slide.active {
-  opacity: 0.3;
+  opacity: 0.9;
 }
 
 .hero {
   text-align: center;
   padding: 2rem;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(209, 205, 205, 0.9);
   border-radius: 10px;
   backdrop-filter: blur(5px);
 }
@@ -52,7 +53,7 @@
 }
 
 .cta-button {
-  background-color: #007bff;
+  background-color: #020f1d;
   color: white;
   border: none;
   padding: 1rem 2rem;
@@ -63,5 +64,5 @@
 }
 
 .cta-button:hover {
-  background-color: #0056b3;
+  background-color: #091725;
 }
