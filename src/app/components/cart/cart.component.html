@@ -113,13 +113,15 @@
       <input
         id="code"
         placeholder="Enter your code"
+        [readOnly]="cartItems.length === 0"
         class="form-control"
         name="discountCode"
       />
       <button
         type="button"
         class="btn btn-outline-secondary"
-        
+        aria-disabled="false"
+        [disabled]="cartItems.length === 0 "
         (click)="applyDiscount()"
       >
         Apply
