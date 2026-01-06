@@ -14,6 +14,8 @@ import { CartComponent } from './components/cart/cart.component';
 import { CartService } from './services/cart.service';
 import { CheckOutPopUpComponent } from './components/check-out-pop-up/check-out-pop-up.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [AppComponent, FooterComponent, HomeComponent],
@@ -29,6 +31,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     DescriptionPageComponent,
     CheckOutPopUpComponent,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    StoreModule.forRoot({}, {}),
+    EffectsModule.forRoot([]),
   ], //i imported CartComponet ,Description and  NavbarComponent, because i made it Standalone so i can be to export
   providers: [ProductservService, CartService], // imported this service here to be used across the app
   bootstrap: [AppComponent],
