@@ -13,6 +13,6 @@ export const cartInitialState: CartState = {
 };
 
 export const cartReducer = createReducer(
-  cartInitialState,
+  cartInitialState
 
 );
