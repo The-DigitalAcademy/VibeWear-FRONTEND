@@ -12,6 +12,6 @@ export const productInitialState: productState = {
 };   
 
 export const productReducer = createReducer(
-  productInitialState,
+  productInitialState
 
 );
