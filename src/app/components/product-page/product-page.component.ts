@@ -1,47 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { ProductservService } from '../../services/productserv.service';
+import { RouterModule, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import * as ProductActions from '../../store/products/product.actions';
+import { selectAllProducts } from '../../store/products/product.selector';
 import { CartService } from '../../services/cart.service';
 
-import { Router } from '@angular/router';
 @Component({
   selector: 'product-page',
+  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './product-page.component.html',
-  styleUrls: ['./product-page.component.css'],
-  standalone: true,
+  styleUrls: ['./product-page.component.css']
 })
-
-// injected the API from services
 export class ProductPageComponent implements OnInit {
-  products: any[] = [];
+
+  products$ = this.store.select(selectAllProducts);
 
   constructor(
-    private productService: ProductservService,
+    private store: Store,
     private cartService: CartService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe({
-      next: (data) => {
-        this.products = data;
-      },
-      error: (error) => {
-        console.error('Error fetching products:', error);
-      },
-    });
+    this.store.dispatch(ProductActions.loadProducts());
   }
 
   addToCart(product: any): void {
     this.cartService.addToCart(product);
-    // Optional: Show toast notification
-    alert(`${product.title} added to cart!`);
   }
 
-  onSelectProduct(productId: Number): void {
-    console.log('Navigating to product ID:', productId);
+  onSelectProduct(productId: number): void {
     this.router.navigate(['products', productId]);
   }
 }
