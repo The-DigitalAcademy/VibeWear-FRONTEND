@@ -16,6 +16,6 @@ export const authInitialState: AuthState = {
 };
 
 export const authReducer = createReducer(
-  authInitialState,
+  authInitialState
 
 );
