@@ -1,5 +1,16 @@
-import { createAction } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
+import { Product } from '../../services/productserv.service';
 
-export const loadProducts = createAction('[Products Component] Load Products');
-export const loadProductsSuccess = createAction('[Products Component] Load Products Success');
-export const loadProductsFailure = createAction('[Products Component] Load Products Failure');
+export const loadProducts = createAction(
+  '[Products] Load Products'
+);
+
+export const loadProductsSuccess = createAction(
+  '[Products] Load Products Success',
+  props<{ products: Product[] }>()
+);
+
+export const loadProductsFailure = createAction(
+  '[Products] Load Products Failure',
+  props<{ error: string }>()
+);
