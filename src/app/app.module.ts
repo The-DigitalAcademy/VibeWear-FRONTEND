@@ -19,7 +19,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { AUTH_FEATURE_KEY, authReducer } from './store/auth/auth.reducer';
 import { PRODUCT_FEATURE_KEY, productReducer } from './store/products/product.reducer';
 import { CART_FEATURE_KEY, cartReducer } from './store/cart/cart.reducer';
-import { RegisterPageComponent } from './register-page/register-page.component';
+import { ProductsEffects } from './store/products/product.effects';
 
 @NgModule({
   declarations: [
@@ -43,7 +43,7 @@ import { RegisterPageComponent } from './register-page/register-page.component';
     StoreModule.forFeature(AUTH_FEATURE_KEY, authReducer),
     StoreModule.forFeature(PRODUCT_FEATURE_KEY, productReducer),
     StoreModule.forFeature(CART_FEATURE_KEY, cartReducer),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([ProductsEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
   providers: [ProductservService, CartService],
