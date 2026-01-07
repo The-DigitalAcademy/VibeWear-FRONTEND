@@ -20,9 +20,10 @@ import { AUTH_FEATURE_KEY, authReducer,  } from './store/auth/auth.reducer';
 import { PRODUCT_FEATURE_KEY, productReducer } from './store/products/product.reducer';
 import { CART_FEATURE_KEY, cartReducer } from './store/cart/cart.reducer';
 import { ProductsEffects } from './store/products/product.effects';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
-  declarations: [AppComponent, FooterComponent, HomeComponent],
+  declarations: [AppComponent, FooterComponent, HomeComponent, LoginComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
