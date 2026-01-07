@@ -16,9 +16,10 @@ import { CheckOutPopUpComponent } from './components/check-out-pop-up/check-out-
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { RegisterPageComponent } from './register-page/register-page.component';
 
 @NgModule({
-  declarations: [AppComponent, FooterComponent, HomeComponent],
+  declarations: [AppComponent, FooterComponent, HomeComponent, RegisterPageComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
