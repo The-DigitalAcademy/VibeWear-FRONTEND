@@ -1,0 +1,56 @@
+<div class="register-container">
+  <h2>Register</h2>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    
+    <input formControlName="name" placeholder="Name" type="text" />
+    <div *ngIf="hasError('name', 'required')" class="error">
+      Name is required
+    </div>
+    <div *ngIf="hasError('name', 'minlength')" class="error">
+      Name must be at least 2 characters
+    </div>
+
+    <input formControlName="surname" placeholder="Surname" type="text" />
+    <div *ngIf="hasError('surname', 'required')" class="error">
+      Surname is required
+    </div>
+    <div *ngIf="hasError('surname', 'minlength')" class="error">
+      Surname must be at least 2 characters
+    </div>
+
+    <input formControlName="email" type="email" placeholder="Email" />
+    <div *ngIf="hasError('email', 'required')" class="error">
+      Email is required
+    </div>
+    <div *ngIf="hasError('email', 'email')" class="error">
+      Please enter a valid email
+    </div>
+
+    <input formControlName="password" type="password" placeholder="Password" />
+    <div *ngIf="hasError('password', 'required')" class="error">
+      Password is required
+    </div>
+    <div *ngIf="hasError('password', 'minlength')" class="error">
+      Password must be at least 6 characters
+    </div>
+
+    <input formControlName="confirmPassword" type="password" placeholder="Confirm Password" />
+    <div *ngIf="hasError('confirmPassword', 'required')" class="error">
+      Please confirm your password
+    </div>
+
+    <div *ngIf="passwordMismatch" class="error password-mismatch">
+      Passwords do not match!
+    </div>
+
+    <button type="submit" [disabled]="isLoading">
+      <span *ngIf="!isLoading">Register</span>
+      <span *ngIf="isLoading">Registering...</span>
+    </button>
+  </form>
+</div>
