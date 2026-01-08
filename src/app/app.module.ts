@@ -46,6 +46,7 @@ import { RegisterPageComponent } from './register-page/register-page.component';
     StoreModule.forFeature(CART_FEATURE_KEY, cartReducer),
     EffectsModule.forRoot([ProductsEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    ReactiveFormsModule,
   ],
   providers: [ProductservService, CartService],
   bootstrap: [AppComponent],

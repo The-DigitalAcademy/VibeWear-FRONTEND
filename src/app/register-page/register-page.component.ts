@@ -12,6 +12,7 @@ export class RegisterPageComponent implements OnInit {
   successMessage: string = '';
   errorMessage: string = '';
   submitted: boolean = false;
+isLoading: any;
 
   constructor(
     private fb: FormBuilder,

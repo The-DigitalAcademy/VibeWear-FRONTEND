@@ -1,39 +1,80 @@
-
 <div class="register-container">
   <h2>Register</h2>
 
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
 
-    <input formControlName="name" placeholder="Name" />
-    <div *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched" class="error">
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
+
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    
+    <input 
+      formControlName="name" 
+      placeholder="Name" 
+      type="text"
+    />
+    <div *ngIf="hasError('name', 'required')" class="error">
       Name is required
     </div>
+    <div *ngIf="hasError('name', 'minlength')" class="error">
+      Name must be at least 2 characters
+    </div>
 
-    <input formControlName="surname" placeholder="Surname" />
-    <div *ngIf="registerForm.get('surname')?.invalid && registerForm.get('surname')?.touched" class="error">
+    <input 
+      formControlName="surname" 
+      placeholder="Surname" 
+      type="text"
+    />
+    <div *ngIf="hasError('surname', 'required')" class="error">
       Surname is required
     </div>
-
-    <input formControlName="email" placeholder="Email" />
-    <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="error">
-      Enter a valid email
+    <div *ngIf="hasError('surname', 'minlength')" class="error">
+      Surname must be at least 2 characters
     </div>
 
-    <input type="password" formControlName="password" placeholder="Password" />
-    <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="error">
+    <input 
+      formControlName="email" 
+      type="email" 
+      placeholder="Email"
+    />
+    <div *ngIf="hasError('email', 'required')" class="error">
+      Email is required
+    </div>
+    <div *ngIf="hasError('email', 'email')" class="error">
+      Please enter a valid email
+    </div>
+
+    <input 
+      formControlName="password" 
+      type="password" 
+      placeholder="Password"
+    />
+    <div *ngIf="hasError('password', 'required')" class="error">
+      Password is required
+    </div>
+    <div *ngIf="hasError('password', 'minlength')" class="error">
       Password must be at least 6 characters
     </div>
 
-    <input type="password" formControlName="confirmPassword" placeholder="Confirm Password" />
-    <div *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched" class="error">
-      Passwords do not match
+    <input 
+      formControlName="confirmPassword" 
+      type="password" 
+      placeholder="Confirm Password"
+    />
+    <div *ngIf="hasError('confirmPassword', 'required')" class="error">
+      Please confirm your password
     </div>
 
-    <button type="submit" routerLink="home">Register</button>
+    <div *ngIf="passwordMismatch" class="error password-mismatch">
+      Passwords do not match!
+    </div>
 
-    <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
-    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
-
+    <button type="submit" [disabled]="isLoading">
+      <span *ngIf="!isLoading">Register</span>
+      <span *ngIf="isLoading">Registering...</span>
+    </button>
   </form>
 </div>
-
