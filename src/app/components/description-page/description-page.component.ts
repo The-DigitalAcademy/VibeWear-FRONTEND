@@ -1,76 +1,57 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductservService } from '../../services/productserv.service';
-import { CartService, CartItem } from '../../services/cart.service';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { addToCart } from 'src/app/store/cart/cart.actions';
+import { Product } from 'src/app/models/product.model';
+
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-description-page',
-  templateUrl: './description-page.component.html',
-  styleUrls: ['./description-page.component.css'],
-  imports: [CommonModule],
   standalone: true,
+  imports: [CommonModule],
+  templateUrl: './description-page.component.html',
+  styleUrls: ['./description-page.component.css']
 })
 export class DescriptionPageComponent implements OnInit {
-  product: any;
-  similarProducts: any[] = [];
+  product!: Product;
 
   constructor(
     private route: ActivatedRoute,
     public router: Router,
     private productService: ProductservService,
-    private cartService: CartService
+    private store: Store
   ) {}
 
   ngOnInit(): void {
-    const productId = this.route.snapshot.paramMap.get('id');
-    console.log('product id passed', productId);
+    const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    if (productId) {
-      this.productService.getProductById(+productId).subscribe({
-        next: (data) => {
-          this.product = data; // already a single product
-          console.log('Loaded product:', this.product);
-        },
-        error: (err) => console.error('Error fetching product:', err),
+    if (id) {
+      this.productService.getProductById(id).subscribe({
+        next: product => (this.product = product),
+        error: err => console.error(err)
       });
     }
   }
 
-  addToCart(product: any): void {
-    this.cartService.addToCart(product);
+  addToCart(product: Product): void {
+    this.store.dispatch(addToCart({ product }));
+
     const modalElement = document.getElementById('cartModal');
-    const modal = new bootstrap.Modal(modalElement);
-    modal.show();
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
   }
 
   goToCart() {
-    const modalElement = document.getElementById('cartModal');
-    if (modalElement) {
-      const modal = bootstrap.Modal.getInstance(modalElement);
-      modal?.hide();
-    }
     this.router.navigate(['/cart']);
   }
 
-  viewProduct(id: number) {
-    this.router.navigate(['/products-page', id]);
-  }
-
-//go to the product page
   goToProducts() {
-    const modalElement = document.getElementById("");
-    if (modalElement) {
-      const modal = bootstrap.Modal.getInstance(modalElement);
-      modal?.hide();
-    }
     this.router.navigate(['/products']);
   }
-
-  Product(id: number) {
-    // Navigate to the product's description page
-    this.router.navigate(['/products-page', id]);
-  }
-  
 }
+
