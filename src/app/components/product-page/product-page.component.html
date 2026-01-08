@@ -1,5 +1,5 @@
 <div class="container mt-5 mb-5 product-section">
-  <h2 class="text-center mb-4 ">Products</h2>
+  <h2 class="text-center mb-4">Products</h2>
 
   <div class="row g-4">
     <div
@@ -18,11 +18,21 @@
             {{ product.description | slice : 0 : 60 }}...
           </p>
           <p class="fw-bold mt-auto price">R{{ product.price }}</p>
+
+          <!-- Add to Cart button -->
           <button
-            class="btn custom-btn mt-2 w-100"
+            class="btn btn-primary mt-2 w-100"
+            (click)="addToCart(product)"
+          >
+            Add to Cart
+          </button>
+
+          <!-- View Product Details button -->
+          <button
+            class="btn btn-outline-secondary mt-2 w-100"
             (click)="onSelectProduct(product.id)"
           >
-            Select
+            View Details
           </button>
         </div>
       </div>

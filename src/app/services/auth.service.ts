@@ -1,65 +1,34 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, switchMap, throwError, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private url = 'http://localhost:3000/users';
+  private users: User[] = [
+    { id: 1, username: 'testuser', email: 'test@test.com', password: '12345' },
+  ];
 
-  constructor(private http: HttpClient) {}
+  private nextId = 2;
 
-  // Register user
+  // Register
   registerUser(user: Omit<User, 'id'>): Observable<User> {
-    return this.getUsers().pipe(
-      map(users => users.find(u => u.email === user.email)),
-      switchMap(existing => {
-        if (existing) {
-          return throwError(() => new Error('Email already in use'));
-        }
-        return this.http.post<User>(this.url, user);
-      })
-    );
+    const exists = this.users.find((u) => u.email === user.email);
+    if (exists) return throwError(() => new Error('Email already in use'));
+
+    const newUser: User = { ...user, id: this.nextId++ };
+    this.users.push(newUser);
+    return of(newUser);
   }
 
-  // Get all users
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.url);
+  // Login
+  loginUser(email: string, password: string): Observable<User> {
+    const user = this.users.find((u) => u.email === email && u.password === password);
+    if (!user) return throwError(() => new Error('Invalid email or password'));
+    return of(user);
   }
 
-  // Login user
-  loginUser(credentials: { email: string; password: string }): Observable<User> {
-    return this.getUsers().pipe(
-      map(users =>
-        users.find(
-          u => u.email === credentials.email && u.password === credentials.password
-        )
-      ),
-      switchMap(user => {
-        if (!user) {
-          return throwError(() => new Error('Invalid email or password'));
-        }
-        localStorage.setItem('user', JSON.stringify(user));
-        return this.http.get<User>(`${this.url}/${user.id}`);
-      })
-    );
-  }
-
-  // Logout
-  logout() {
-    localStorage.removeItem('user');
-  }
-
-  // Check if a user is logged in
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('user');
-  }
-
-  // Get current user
-  getCurrentUser(): User | null {
-    const userJson = localStorage.getItem('user');
-    return userJson ? JSON.parse(userJson) as User : null;
-  }
+  // Logout (for local storage persistence later)
+  logout(): void {}
 }

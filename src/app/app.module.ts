@@ -21,9 +21,11 @@ import { PRODUCT_FEATURE_KEY, productReducer } from './store/products/product.re
 import { CART_FEATURE_KEY, cartReducer } from './store/cart/cart.reducer';
 import { ProductsEffects } from './store/products/product.effects';
 import { LoginComponent } from './components/login/login.component';
+import { AuthEffects } from './store/auth/auth.effects';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
-  declarations: [AppComponent, FooterComponent, HomeComponent, LoginComponent],
+  declarations: [AppComponent, FooterComponent, HomeComponent, LoginComponent, RegisterComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -39,7 +41,7 @@ import { LoginComponent } from './components/login/login.component';
     StoreModule.forFeature(AUTH_FEATURE_KEY, authReducer),
     StoreModule.forFeature(PRODUCT_FEATURE_KEY, productReducer),
     StoreModule.forFeature(CART_FEATURE_KEY, cartReducer),
-    EffectsModule.forRoot([ProductsEffects]),
+    EffectsModule.forRoot([ProductsEffects, AuthEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
 
   ], //i imported CartComponet ,Description and  NavbarComponent, because i made it Standalone so i can be to export
