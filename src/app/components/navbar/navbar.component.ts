@@ -5,6 +5,10 @@ import { CartService } from '../../services/cart.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { logoutAction } from 'src/app/store/auth/auth.actions';
+import { selectIsAuthenticated, selectUser } from 'src/app/store/auth/auth.selector';
 
 @Component({
   selector: 'app-navbar',
@@ -18,17 +22,40 @@ export class NavbarComponent implements OnInit {
   searchTerm = '';
   searchResults: any[] = [];
   showResults = false;
+  isAuth: boolean = false;
+
+  isAuthenticated$!: Observable<boolean>;
+  user$!: Observable<{ username: string } | null>;
 
   constructor(
     private productService: ProductservService,
     private router: Router,
-    private cartService: CartService
+    private cartService: CartService,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
+    // Cart count
     this.cartService.cartItems$.subscribe(() => {
       this.cartItemCount = this.cartService.getCartItemCount();
     });
+
+    // Auth state
+    this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
+    this.isAuthenticated$.subscribe(value => this.isAuth = value);
+    this.user$ = this.store.select(selectUser);
+  }
+
+  logout(): void {
+    this.store.dispatch(logoutAction());
+  }
+
+  goToLogin(): void {
+    this.router.navigate(['/login']);
+  }
+
+  goToRegister(): void {
+    this.router.navigate(['/register']);
   }
 
   onSearch() {
