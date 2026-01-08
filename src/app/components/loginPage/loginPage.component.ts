@@ -32,10 +32,9 @@ export class LoginPageComponent {
 
     console.log('Login data:', loginData);
 
-    // Replace this with your real login API call later
-    // this.authService.login(loginData).subscribe(...)
+ 
 
-    // Temporary navigation after successful login
-    this.router.navigate(['/dashboard']);
+    // Navigation after login
+    this.router.navigate(['/home']);
   }
 }
