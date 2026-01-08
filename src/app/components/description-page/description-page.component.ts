@@ -47,8 +47,16 @@ export class DescriptionPageComponent implements OnInit {
   }
 
   goToCart() {
-    this.router.navigate(['/cart']);
+  const modalElement = document.getElementById('cartModal');
+  if (modalElement) {
+    const modal = bootstrap.Modal.getInstance(modalElement);
+    if (modal) {
+      modal.hide(); 
+    }
   }
+  this.router.navigate(['/cart']);
+}
+
 
   goToProducts() {
     this.router.navigate(['/products']);

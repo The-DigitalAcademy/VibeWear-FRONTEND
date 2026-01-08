@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { addToCart, removeFromCart, clearCart } from './cart.actions';
+import { addToCart, removeFromCart, clearCart, updateCartItemQuantity } from './cart.actions';
 import { Product } from 'src/app/models/product.model';
 
 export const CART_FEATURE_KEY = 'cart';
@@ -47,5 +47,15 @@ export const cartReducer = createReducer(
   on(clearCart, state => ({
     ...state,
     items: []
-  }))
+  })),
+
+  on(updateCartItemQuantity, (state, { productId, quantity }) => {
+    const updatedItems = state.items
+      .map(item =>
+        item.id === productId ? { ...item, quantity } : item
+      )
+      .filter(item => item.quantity > 0); // remove items with 0 quantity
+
+    return { ...state, items: updatedItems };
+  })
 );
