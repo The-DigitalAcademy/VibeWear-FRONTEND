@@ -16,14 +16,19 @@ import { CheckOutPopUpComponent } from './components/check-out-pop-up/check-out-
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { AUTH_FEATURE_KEY, authReducer,  } from './store/auth/auth.reducer';
+import { AUTH_FEATURE_KEY, authReducer } from './store/auth/auth.reducer';
 import { PRODUCT_FEATURE_KEY, productReducer } from './store/products/product.reducer';
 import { CART_FEATURE_KEY, cartReducer } from './store/cart/cart.reducer';
 import { ProductsEffects } from './store/products/product.effects';
-import { LoginPageComponent } from './components/loginPage/loginPage.component';
+import { RegisterPageComponent } from './register-page/register-page.component';
 
 @NgModule({
-  declarations: [AppComponent, FooterComponent, HomeComponent, LoginPageComponent],
+  declarations: [
+    AppComponent, 
+    FooterComponent, 
+    HomeComponent, 
+    RegisterPageComponent 
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -41,9 +46,9 @@ import { LoginPageComponent } from './components/loginPage/loginPage.component';
     StoreModule.forFeature(CART_FEATURE_KEY, cartReducer),
     EffectsModule.forRoot([ProductsEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
-
-  ], //i imported CartComponet ,Description and  NavbarComponent, because i made it Standalone so i can be to export
-  providers: [ProductservService, CartService], // imported this service here to be used across the app
+    ReactiveFormsModule,
+  ],
+  providers: [ProductservService, CartService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

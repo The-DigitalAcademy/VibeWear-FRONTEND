@@ -1,0 +1,60 @@
+/* Black, white, grey theme */
+body {
+  font-family: Arial, sans-serif;
+  background-color: black; 
+  color: #ffffff;
+}
+
+.register-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+h2 {
+  text-align: center;
+  color: black;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #555; 
+  border-radius: 5px;
+  background-color: white;
+  color: #080808; 
+}
+
+input::placeholder {
+  color: black; 
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: black; 
+  color: white; 
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+
+.error {
+  color: #ff4d4d; /* red for errors */
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+
+.success {
+  color: #00ff99; /* green for success */
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
