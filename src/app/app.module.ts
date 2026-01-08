@@ -16,7 +16,7 @@ import { CheckOutPopUpComponent } from './components/check-out-pop-up/check-out-
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { AUTH_FEATURE_KEY, authReducer,  } from './store/auth/auth.reducer';
+import { AUTH_FEATURE_KEY, authReducer } from './store/auth/auth.reducer';
 import { PRODUCT_FEATURE_KEY, productReducer } from './store/products/product.reducer';
 import { CART_FEATURE_KEY, cartReducer } from './store/cart/cart.reducer';
 import { ProductsEffects } from './store/products/product.effects';
@@ -43,9 +43,9 @@ import { RegisterComponent } from './register/register.component';
     StoreModule.forFeature(CART_FEATURE_KEY, cartReducer),
     EffectsModule.forRoot([ProductsEffects, AuthEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
-
-  ], //i imported CartComponet ,Description and  NavbarComponent, because i made it Standalone so i can be to export
-  providers: [ProductservService, CartService], // imported this service here to be used across the app
+    ReactiveFormsModule,
+  ],
+  providers: [ProductservService, CartService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
