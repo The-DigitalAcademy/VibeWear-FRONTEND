@@ -23,6 +23,7 @@ import { ProductsEffects } from './store/products/product.effects';
 import { LoginComponent } from './components/login/login.component';
 import { AuthEffects } from './store/auth/auth.effects';
 import { RegisterComponent } from './register/register.component';
+import { cartStorageMetaReducer } from './store/meta-reducer/cart-storage.meta-reducer';
 
 @NgModule({
   declarations: [AppComponent, FooterComponent, HomeComponent, LoginComponent, RegisterComponent],
@@ -40,7 +41,7 @@ import { RegisterComponent } from './register/register.component';
     StoreModule.forRoot({}),
     StoreModule.forFeature(AUTH_FEATURE_KEY, authReducer),
     StoreModule.forFeature(PRODUCT_FEATURE_KEY, productReducer),
-    StoreModule.forFeature(CART_FEATURE_KEY, cartReducer),
+    StoreModule.forFeature(CART_FEATURE_KEY, cartReducer, { metaReducers: [cartStorageMetaReducer]}),
     EffectsModule.forRoot([ProductsEffects, AuthEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     ReactiveFormsModule,

@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { CartItem } from '../../store/cart/cart.reducer';
 import {selectCartItems,selectCartTotal} from '../../store/cart/cart.selector';
-import {addToCart,removeFromCart,clearCart, updateCartItemQuantity} from '../../store/cart/cart.actions';
+import {removeFromCart,clearCart, updateCartItemQuantity} from '../../store/cart/cart.actions';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -18,10 +18,6 @@ import { Store } from '@ngrx/store';
 export class CartComponent {
   cartItems$: Observable<CartItem[]>;
   totalPrice$: Observable<number>;
-
-  shippingCost = 0;
-  discountCode = '';
-  discount = 0;
 
   constructor(private store: Store) {
     this.cartItems$ = this.store.select(selectCartItems);
@@ -47,24 +43,7 @@ export class CartComponent {
     this.store.dispatch(clearCart());
   }
 
-  onShippingChange(event: Event): void {
-    const value = (event.target as HTMLSelectElement).value;
-
-    this.shippingCost =
-      value === 'express' ? 120 :
-      value === 'standard' ? 50 : 0;
-  }
-
-  applyDiscount(total: number): void {
-    if (this.discountCode.toLowerCase() === 'save10') {
-      this.discount = total * 0.1;
-    } else {
-      this.discount = 0;
-      alert('Invalid discount code');
-    }
-  }
-
   grandTotal(total: number): number {
-    return total + this.shippingCost - this.discount;
+    return total;
   }
 }
