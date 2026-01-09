@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductservService } from '../../services/productserv.service';
-import { CartService } from '../../services/cart.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -23,7 +22,6 @@ export class NavbarComponent implements OnInit {
   searchTerm = '';
   searchResults: any[] = [];
   showResults = false;
-  isAuth: boolean = false;
 
   isAuthenticated$!: Observable<boolean>;
   user$!: Observable<{ username: string } | null>;
@@ -40,7 +38,6 @@ export class NavbarComponent implements OnInit {
 
     // Auth state
     this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
-    this.isAuthenticated$.subscribe(value => this.isAuth = value);
     this.user$ = this.store.select(selectUser);
   }
 

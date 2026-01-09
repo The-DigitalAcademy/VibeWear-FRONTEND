@@ -38,12 +38,12 @@
 
     <!-- Authentication Buttons -->
     <ng-container>
-      <ng-container>
+      <ng-container *ngIf="!(isAuthenticated$ | async)">
         <button class="btn btn-outline-primary ms-2" (click)="goToLogin()">Login</button>
         <button class="btn btn-primary ms-2" (click)="goToRegister()">Register</button>
       </ng-container>
 
-      <ng-container *ngIf="isAuth">
+      <ng-container *ngIf="isAuthenticated$ | async">
         <span class="ms-2" *ngIf="user$ | async as user">Hello, {{ user.username }}</span>
         <button class="btn btn-danger ms-2" (click)="logout()">Logout</button>
       </ng-container>
