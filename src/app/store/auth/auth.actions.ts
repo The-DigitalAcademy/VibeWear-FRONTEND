@@ -18,11 +18,11 @@ export const registerFailure = createAction(
 // LOGIN
 export const loginAction = createAction(
   '[Auth] Login',
-  props<{ email: string; password: string }>()
+  props<{ email: string; password: string; returnUrl: string }>()
 );
 export const loginSuccess = createAction(
   '[Auth] Login Success',
-  props<{ user: User; successMessage: string }>()
+  props<{ user: User; successMessage: string; returnUrl: string }>()
 );
 export const loginFailure = createAction(
   '[Auth] Login Failure',

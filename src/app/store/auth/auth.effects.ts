@@ -39,10 +39,10 @@ export class AuthEffects {
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.loginAction),
-      mergeMap(({ email, password }) =>
+      mergeMap(({ email, password, returnUrl }) =>
         this.authService.loginUser(email, password).pipe(
-          map(user => AuthActions.loginSuccess({ user, successMessage: 'Login successful!' })),
-          tap(() => this.router.navigate(['/'])),
+          map(user => AuthActions.loginSuccess({ user, successMessage: 'Login successful!', returnUrl })),
+          tap(() => this.router.navigate([returnUrl])),
           catchError(error => of(AuthActions.loginFailure({ errorMessage: error.message })))
         )
       )
