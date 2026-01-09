@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { logoutAction } from 'src/app/store/auth/auth.actions';
 import { selectIsAuthenticated, selectUser } from 'src/app/store/auth/auth.selector';
+import { selectCartCount } from 'src/app/store/cart/cart.selector';
 
 @Component({
   selector: 'app-navbar',
@@ -18,7 +19,7 @@ import { selectIsAuthenticated, selectUser } from 'src/app/store/auth/auth.selec
   standalone: true
 })
 export class NavbarComponent implements OnInit {
-  cartItemCount = 0;
+  cartItemCount$!: Observable<number>;
   searchTerm = '';
   searchResults: any[] = [];
   showResults = false;
@@ -30,15 +31,12 @@ export class NavbarComponent implements OnInit {
   constructor(
     private productService: ProductservService,
     private router: Router,
-    private cartService: CartService,
     private store: Store
   ) {}
 
   ngOnInit(): void {
     // Cart count
-    this.cartService.cartItems$.subscribe(() => {
-      this.cartItemCount = this.cartService.getCartItemCount();
-    });
+    this.cartItemCount$ = this.store.select(selectCartCount);
 
     // Auth state
     this.isAuthenticated$ = this.store.select(selectIsAuthenticated);

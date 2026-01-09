@@ -6,12 +6,13 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { CheckOutPopUpComponent } from "../check-out-pop-up/check-out-pop-up.component";
 
 
 @Component({
   selector: "app-cart",
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, CheckOutPopUpComponent],
   templateUrl: "./cart.component.html",
   styleUrls: ["./cart.component.css"],
 })

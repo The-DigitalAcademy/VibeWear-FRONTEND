@@ -30,10 +30,10 @@
     <a routerLink="/products">Products</a>
     <a class="nav-link position-relative" routerLink="/cart">
       <i class="bi bi-cart3"></i> Cart
-      <span *ngIf="cartItemCount > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-        {{ cartItemCount }}
-        <span class="visually-hidden">items in cart</span>
-      </span>
+      <span *ngIf="(cartItemCount$ | async) ?? 0 > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+  {{ cartItemCount$ | async }}
+  <span class="visually-hidden">items in cart</span>
+</span>
     </a>
 
     <!-- Authentication Buttons -->
