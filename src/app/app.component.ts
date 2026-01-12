@@ -19,7 +19,16 @@ export class AppComponent implements OnInit {
     // Fetch products when the component initializes
     this.productServic.getProducts().subscribe((data: any[]) => {
       this.products = data;
-      console.log(this.products);
+      // this.productServic.storeProducts(this.products).subscribe({
+      //     next: storedProducts => {
+      //       console.log('Products stored successfully:', storedProducts);
+      //     },
+      //     error: err => {
+      //       console.error('Error storing products:', err);
+      //     }
+      //   });
     });
+    // console.log("Products in component:", this.products);
+        
   }
 }

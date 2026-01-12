@@ -9,6 +9,11 @@ export const selectAllProducts = createSelector(
   state => state.products
 );
 
+export const selectProductById = (productId: number) => createSelector(
+  selectProductsState,
+  state => state.products.find(product => product.id === productId)
+);
+
 export const selectProductsLoading = createSelector(
   selectProductsState,
   state => state.loading
