@@ -25,8 +25,8 @@ export class AuthEffects {
             });
           }),
           tap(() => {
-            // Auto-login after registration → navigate to home
-            this.router.navigate(['/']);
+            // Auto-login after registration → navigate to login
+            this.router.navigate(['/login']);
           }),
           catchError(error =>
             of(AuthActions.registerFailure({ errorMessage: error.message }))
