@@ -7,7 +7,7 @@ import { addToCart, updateCartItemQuantity, removeFromCart, clearCart } from "./
 
 @Injectable()
 export class CartEffects {
-  private apiUrl = 'http://localhost:8080/cart';
+  private apiUrl = 'http://localhost:9090/cart';
 
   constructor(
     private actions$: Actions,
