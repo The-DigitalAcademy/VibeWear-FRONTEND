@@ -1,45 +1,58 @@
 <div class="container mt-4">
-
   <h3 class="mb-3">Your Order History</h3>
 
-  <div *ngIf="cartItems.length === 0" class="alert alert-info">
-    Your cart is empty.
+  <div *ngIf="loading" class="text-center">
+    Loading orders...
   </div>
 
-  <div *ngIf="cartItems.length > 0">
+  <div *ngIf="!loading && carts.length === 0" class="alert alert-info">
+    No orders found.
+  </div>
 
-    <table class="table table-striped align-middle">
-      <thead>
-        <tr>
-          <th>Product</th>
-          <th>Price</th>
-          <th>Qty</th>
-          <th>Subtotal</th>
-        </tr>
-      </thead>
+  <div *ngIf="!loading && carts.length > 0">
 
-      <tbody>
-        <tr *ngFor="let item of cartItems">
-          <td>{{ item.title }}</td>
-          <td>R {{ item.price | number:'1.2-2' }}</td>
-          <td>{{ item.quantity }}</td>
-          <td>R {{ item.price * item.quantity | number:'1.2-2' }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div *ngFor="let cart of carts" class="card mb-3 shadow-sm">
+      <div class="card-header d-flex justify-content-between">
+        <strong>Order #{{ cart.cartId }}</strong>
+        <span>Total Items: {{ cart.totalItems }}</span>
+      </div>
 
-    <hr />
+      <div class="card-body">
+        <table class="table table-striped align-middle">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of cart.items">
+              <td>{{ item.title }}</td>
+              <td>R {{ item.price | number:'1.2-2' }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>R {{ item.price * item.quantity | number:'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
 
-    <div class="d-flex justify-content-between fw-bold">
-      <span>Total Items:</span>
-      <span>{{ totalItems }}</span>
+        <hr />
+
+        <div class="d-flex justify-content-between fw-bold">
+          <span>Total Items:</span>
+          <span>{{ cart.totalItems }}</span>
+        </div>
+
+        <div class="d-flex justify-content-between fw-bold">
+          <span>Total Price:</span>
+          <span>R {{ getCartTotal(cart) | number:'1.2-2' }}</span>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="d-flex justify-content-between fw-bold">
-      <span>Total Price:</span>
-      <span>R {{ totalPrice | number:'1.2-2' }}</span>
-    </div>
-
-
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
   </div>
 </div>
