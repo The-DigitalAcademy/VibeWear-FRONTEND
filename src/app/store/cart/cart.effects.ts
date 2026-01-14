@@ -1,10 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Actions, concatLatestFrom, createEffect, ofType } from "@ngrx/effects";
-import { catchError, map, of, switchMap, withLatestFrom } from "rxjs";
-import { addToCart, updateCartItemQuantity, removeFromCart, clearCart, checkoutCart, checkoutCartFailure, checkoutCartSuccess } from "./cart.actions";
+import { catchError, map, of, switchMap } from "rxjs";
+import { checkoutCart, checkoutCartFailure, checkoutCartSuccess } from "./cart.actions";
 import { CartRequest } from "src/app/models/cart-request.model";
-import { selectCartCount, selectCartTotal } from "./cart.selector";
+import { selectCartCount, selectCartItems, selectCartTotal } from "./cart.selector";
 import { Store } from "@ngrx/store";
 import { CartService } from "src/app/services/cart.service";
 
@@ -21,73 +21,25 @@ export class CartEffects {
   ) {}
 
  checkoutCart$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(checkoutCart),
+  this.actions$.pipe(
+    ofType(checkoutCart),
+    concatLatestFrom(() => [
+      this.store.select(selectCartCount),
+      this.store.select(selectCartTotal),
+      this.store.select(selectCartItems)
+    ]),
+    switchMap(([, totalItems, totalAmount, items]) => {
+      const payload: CartRequest = { totalItems, totalAmount, items };
 
-      concatLatestFrom(() => [
-        this.store.select(selectCartCount),
-        this.store.select(selectCartTotal),
-      ]),
+      return this.cartService.syncCartTotals(payload).pipe(
+        map(response => checkoutCartSuccess({ response })),
+        catchError(error => of(checkoutCartFailure({ error })))
+      );
+    })
+  )
+);
 
-      switchMap(([, totalItems, totalAmount]) => {
-        const payload = { totalItems, totalAmount };
 
-        return this.cartService.syncCartTotals(payload).pipe(
-          map(response => checkoutCartSuccess({ response })),
-          catchError(error => of(checkoutCartFailure({ error })))
-        );
-      })
-    )
-  );
 
-  // addToCart$ = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(addToCart),
-  //       switchMap(({ product }) =>
-  //         this.http.post(this.apiUrl, {
-  //           productId: product.id,
-  //           title: product.title,
-  //           price: product.price,
-  //           image: product.image,
-  //           quantity: 1
-  //         })
-  //       )
-  //     ),
-  //   { dispatch: false }
-  // );
-
-  // updateQuantity$ = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(updateCartItemQuantity),
-  //       switchMap(({ productId, quantity }) =>
-  //         this.http.put(
-  //           `${this.apiUrl}/${productId}?quantity=${quantity}`,
-  //           {}
-  //         )
-  //       )
-  //     ),
-  //   { dispatch: false }
-  // );
-
-  // removeFromCart$ = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(removeFromCart),
-  //       switchMap(({ productId }) =>
-  //         this.http.delete(`${this.apiUrl}/${productId}`)
-  //       )
-  //     ),
-  //   { dispatch: false }
-  // );
-
-  // clearCart$ = createEffect(
-  //   () =>
-  //     this.actions$.pipe(
-  //       ofType(clearCart),
-  //       switchMap(() => this.http.delete(this.apiUrl))
-  //     ),
-  //   { dispatch: false }
-  // );
+  
 }

@@ -26,6 +26,7 @@ import { RegisterComponent } from './register/register.component';
 import { cartStorageMetaReducer } from './store/meta-reducer/cart-storage.meta-reducer';
 import { CartEffects } from './store/cart/cart.effects';
 
+
 @NgModule({
   declarations: [AppComponent, FooterComponent, HomeComponent, LoginComponent, RegisterComponent],
   imports: [

@@ -31,10 +31,10 @@ export class CartService {
 
 
   syncCartTotals(payload: CartRequest): Observable<any> {
-    // print the payload in the terminal
     console.log(payload);
     return this.http.post(this.apiUrl, payload, {withCredentials: true});
   }
+  
 
   addToCart(product: any): void {
     const currentItems = this.cartItems.value;
