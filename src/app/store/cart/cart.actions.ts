@@ -21,3 +21,15 @@ export const updateCartItemQuantity = createAction(
   '[Cart] Update Cart Item Quantity',
   props<{ productId: number; quantity: number }>()
 );
+
+export const checkoutCart = createAction('[Cart] Checkout');
+
+export const checkoutCartSuccess = createAction(
+  '[Cart] Checkout Success',
+  props<{ response: any }>()
+);
+
+export const checkoutCartFailure = createAction(
+  '[Cart] Checkout Failure',
+  props<{ error: any }>()
+);

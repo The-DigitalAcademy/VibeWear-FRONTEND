@@ -19,7 +19,7 @@ export interface Product {
   providedIn:'root'
 })
 export class ProductservService {
-  private apiUrl = 'https://fakestoreapi.com/products';
+  private apiUrl = 'http://localhost:9090/products';
 
   constructor(private http: HttpClient) { }
 
@@ -34,6 +34,11 @@ export class ProductservService {
  // Fetch products in the same category
    getProductsByCategory(category: string): Observable<Product[]> {
      return this.http.get<Product[]>(`${this.apiUrl}/category/${category}`);
+   }
+
+   storeProducts(products: Product[]): Observable<Product[]> {
+    console.log('Storing products:', products);
+     return this.http.post<Product[]>("http://localhost:9090/products", products);
    }
 
 }

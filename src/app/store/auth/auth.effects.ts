@@ -1,4 +1,3 @@
-// src/app/store/auth/auth.effects.ts
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { mergeMap, map, catchError, tap } from 'rxjs/operators';
@@ -17,7 +16,6 @@ export class AuthEffects {
       mergeMap(({ user }) =>
         this.authService.registerUser(user).pipe(
           map(registeredUser => {
-            // Persist user so we can auto-login after register
             localStorage.setItem('user', JSON.stringify(registeredUser));
             return AuthActions.registerSuccess({
               user: registeredUser,
@@ -25,8 +23,7 @@ export class AuthEffects {
             });
           }),
           tap(() => {
-            // Auto-login after registration → navigate to login
-            this.router.navigate(['/login']);
+            this.router.navigate(['/']);
           }),
           catchError(error =>
             of(AuthActions.registerFailure({ errorMessage: error.message }))
@@ -55,7 +52,7 @@ export class AuthEffects {
       ofType(AuthActions.logoutAction),
       tap(() => {
         this.authService.logout();
-        localStorage.removeItem('user'); // clear session
+        localStorage.removeItem('user'); 
         this.router.navigate(['/login']);
       })
     ),

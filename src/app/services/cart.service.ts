@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { CartRequest } from '../models/cart-request.model';
 
 //this is interface for Cart item
 export interface CartItem {
@@ -17,13 +19,22 @@ export class CartService {
   private cartItems = new BehaviorSubject<CartItem[]>([]);
   cartItems$ = this.cartItems.asObservable();
 
-  constructor() {
+  constructor(private http: HttpClient) {
     // Load cart from localStorage on service initialization
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
       this.cartItems.next(JSON.parse(savedCart));
     }
   }
+
+  private apiUrl = 'http://localhost:9090/cart/order';
+
+
+  syncCartTotals(payload: CartRequest): Observable<any> {
+    console.log(payload);
+    return this.http.post(this.apiUrl, payload, {withCredentials: true});
+  }
+  
 
   addToCart(product: any): void {
     const currentItems = this.cartItems.value;
@@ -82,4 +93,6 @@ export class CartService {
   private saveToLocalStorage(): void {
     localStorage.setItem('cart', JSON.stringify(this.cartItems.value));
   }
+
+  
 }
