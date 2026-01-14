@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { CartRequest } from '../models/cart-request.model';
 
 //this is interface for Cart item
 export interface CartItem {
@@ -26,12 +27,14 @@ export class CartService {
     }
   }
 
-  private apiUrl = 'http://localhost:9090/orders';
+  private apiUrl = 'http://localhost:9090/cart/order';
 
 
-  // placeOrder(items: CartItem[]): Observable<any> {
-  //   return this.http.post(this.apiUrl, { items });
-  // }
+  syncCartTotals(payload: CartRequest): Observable<any> {
+    // print the payload in the terminal
+    console.log(payload);
+    return this.http.post(this.apiUrl, payload, {withCredentials: true});
+  }
 
   addToCart(product: any): void {
     const currentItems = this.cartItems.value;

@@ -1,13 +1,20 @@
-import { Observable } from 'rxjs';
-import { CartItem } from '../../store/cart/cart.reducer';
-import {selectCartItems,selectCartTotal} from '../../store/cart/cart.selector';
-import {removeFromCart,clearCart, updateCartItemQuantity} from '../../store/cart/cart.actions';
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Observable } from "rxjs";
+import { CartItem } from "../../store/cart/cart.reducer";
+import {
+  selectCartItems,
+  selectCartTotal,
+} from "../../store/cart/cart.selector";
+import {
+  removeFromCart,
+  clearCart,
+  updateCartItemQuantity,
+  checkoutCart,
+} from "../../store/cart/cart.actions";
+import { CommonModule } from "@angular/common";
+import { Component } from "@angular/core";
+import { RouterModule } from "@angular/router";
+import { Store } from "@ngrx/store";
 import { CheckOutPopUpComponent } from "../check-out-pop-up/check-out-pop-up.component";
-
 
 @Component({
   selector: "app-cart",
@@ -30,15 +37,17 @@ export class CartComponent {
   }
 
   updateQuantity(item: CartItem, quantity: number): void {
-  if (quantity <= 0) {
-    this.removeItem(item.id);
-  } else {
-    this.store.dispatch(updateCartItemQuantity({ 
-      productId: item.id, 
-      quantity 
-    }));
+    if (quantity <= 0) {
+      this.removeItem(item.id);
+    } else {
+      this.store.dispatch(
+        updateCartItemQuantity({
+          productId: item.id,
+          quantity,
+        })
+      );
+    }
   }
-}
 
   clearCart(): void {
     this.store.dispatch(clearCart());
@@ -46,5 +55,9 @@ export class CartComponent {
 
   grandTotal(total: number): number {
     return total;
+  }
+
+  checkout(): void {
+    this.store.dispatch(checkoutCart());
   }
 }
