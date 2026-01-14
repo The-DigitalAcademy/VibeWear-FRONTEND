@@ -1,16 +1,31 @@
 <nav class="navbar">
   <div class="nav-brand">
-    <img src="assets/images/Logo maker project.png" alt="Logo" class="logo-img" />
+    <img
+      src="assets/images/Logo maker project.png"
+      alt="Logo"
+      class="logo-img"
+    />
     <a>VIBEWEAR</a>
   </div>
 
   <div class="search-container">
-    <input type="text" placeholder="Search products..." [(ngModel)]="searchTerm" (blur)="hideResults()" />
-    <button class="search-btn" (click)="onSearch()"><i class="bi bi-search"></i></button>
+    <input
+      type="text"
+      placeholder="Search products..."
+      [(ngModel)]="searchTerm"
+      (blur)="hideResults()"
+    />
+    <button class="search-btn" (click)="onSearch()">
+      <i class="bi bi-search"></i>
+    </button>
 
     <div class="search-results" *ngIf="showResults">
       <div *ngIf="searchResults.length > 0">
-        <div class="result-item" *ngFor="let product of searchResults.slice(0,8)" (click)="goToProduct(product.id)">
+        <div
+          class="result-item"
+          *ngFor="let product of searchResults.slice(0, 8)"
+          (click)="goToProduct(product.id)"
+        >
           <img [src]="product.image" [alt]="product.title" />
           <div class="product-info">
             <span class="product-title">{{ product.title }}</span>
@@ -30,21 +45,34 @@
     <a routerLink="/products">Products</a>
     <a class="nav-link position-relative" routerLink="/cart">
       <i class="bi bi-cart3"></i> Cart
-      <span *ngIf="(cartItemCount$ | async) ?? 0 > 0" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-  {{ cartItemCount$ | async }}
-  <span class="visually-hidden">items in cart</span>
-</span>
+      <span
+        *ngIf="(cartItemCount$ | async) ?? 0 > 0"
+        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+      >
+        {{ cartItemCount$ | async }}
+        <span class="visually-hidden">items in cart</span>
+      </span>
     </a>
+
+    <a class="nav-link position-relative" routerLink="/orders"></a>
 
     <!-- Authentication Buttons -->
     <ng-container>
-      <ng-container>
-        <button class="btn btn-outline-primary ms-2" (click)="goToLogin()">Login</button>
-        <button class="btn btn-primary ms-2" (click)="goToRegister()">Register</button>
+      <!-- User is NOT logged in -->
+      <ng-container *ngIf="!isAuth">
+        <button class="btn btn-outline-primary ms-2" (click)="goToLogin()">
+          Login
+        </button>
+        <button class="btn btn-primary ms-2" (click)="goToRegister()">
+          Register
+        </button>
       </ng-container>
 
+      <!-- User IS logged in -->
       <ng-container *ngIf="isAuth">
-        <span class="ms-2" *ngIf="user$ | async as user">Hello, {{ user.username }}</span>
+        <span class="ms-2" *ngIf="user$ | async as user"
+          >Hello, {{ user.username }}</span
+        >
         <button class="btn btn-danger ms-2" (click)="logout()">Logout</button>
       </ng-container>
     </ng-container>
