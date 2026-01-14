@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { CartRequest } from '../models/cart-request.model';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { BehaviorSubject, Observable } from "rxjs";
+import { CartRequest } from "../models/cart-request.model";
+import { Cart } from "../models/cart.model";
 
 //this is interface for Cart item
 export interface CartItem {
@@ -13,7 +14,7 @@ export interface CartItem {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class CartService {
   private cartItems = new BehaviorSubject<CartItem[]>([]);
@@ -21,24 +22,33 @@ export class CartService {
 
   constructor(private http: HttpClient) {
     // Load cart from localStorage on service initialization
-    const savedCart = localStorage.getItem('cart');
+    const savedCart = localStorage.getItem("cart");
     if (savedCart) {
       this.cartItems.next(JSON.parse(savedCart));
     }
   }
 
-  private apiUrl = 'http://localhost:9090/cart/order';
-
+  private apiUrl = "http://localhost:9090/cart/order";
 
   syncCartTotals(payload: CartRequest): Observable<any> {
     console.log(payload);
-    return this.http.post(this.apiUrl, payload, {withCredentials: true});
+    return this.http.post(this.apiUrl, payload, { withCredentials: true });
+  }
+
+  getCartItems(): Observable<CartItem[]> {
+    return this.http.get<CartItem[]>("http://localhost:9090/cart/items", {
+      withCredentials: true,
+    });
+  }
+
+  getGroupedCarts(): Observable<Cart[]> {
+    return this.http.get<Cart[]>("http://localhost:9090/cart/sessions", { withCredentials: true });
   }
   
 
   addToCart(product: any): void {
     const currentItems = this.cartItems.value;
-    const existingItem = currentItems.find(item => item.id === product.id);
+    const existingItem = currentItems.find((item) => item.id === product.id);
 
     if (existingItem) {
       existingItem.quantity += 1;
@@ -48,7 +58,7 @@ export class CartService {
         title: product.title,
         price: product.price,
         image: product.image,
-        quantity: 1
+        quantity: 1,
       });
     }
 
@@ -57,15 +67,17 @@ export class CartService {
   }
 
   removeFromCart(productId: number): void {
-    const currentItems = this.cartItems.value.filter(item => item.id !== productId);
+    const currentItems = this.cartItems.value.filter(
+      (item) => item.id !== productId
+    );
     this.cartItems.next(currentItems);
     this.saveToLocalStorage();
   }
 
   updateQuantity(productId: number, quantity: number): void {
     const currentItems = this.cartItems.value;
-    const item = currentItems.find(item => item.id === productId);
-    
+    const item = currentItems.find((item) => item.id === productId);
+
     if (item) {
       if (quantity <= 0) {
         this.removeFromCart(productId);
@@ -78,21 +90,25 @@ export class CartService {
   }
 
   getCartItemCount(): number {
-    return this.cartItems.value.reduce((total, item) => total + item.quantity, 0);
+    return this.cartItems.value.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
   }
 
   getTotalPrice(): number {
-    return this.cartItems.value.reduce((total, item) => total + (item.price * item.quantity), 0);
+    return this.cartItems.value.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
   }
 
   clearCart(): void {
     this.cartItems.next([]);
-    localStorage.removeItem('cart');
+    localStorage.removeItem("cart");
   }
 
   private saveToLocalStorage(): void {
-    localStorage.setItem('cart', JSON.stringify(this.cartItems.value));
+    localStorage.setItem("cart", JSON.stringify(this.cartItems.value));
   }
-
-  
 }

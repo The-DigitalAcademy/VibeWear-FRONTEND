@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Cart } from '../models/cart.model';
 
 export interface Product {
   id: number;
@@ -29,6 +30,10 @@ export class ProductservService {
 
   getProductById(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.apiUrl}/${id}`);
+  }
+
+  getGroupedCarts(): Observable<Cart[]> {
+    return this.http.get<Cart[]>(this.apiUrl, { withCredentials: true });
   }
   
  // Fetch products in the same category

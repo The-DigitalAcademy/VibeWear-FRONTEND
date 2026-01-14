@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Actions, concatLatestFrom, createEffect, ofType } from "@ngrx/effects";
-import { catchError, map, of, switchMap } from "rxjs";
-import { checkoutCart, checkoutCartFailure, checkoutCartSuccess } from "./cart.actions";
+import { catchError, map, mergeMap, of, switchMap } from "rxjs";
+import { checkoutCart, checkoutCartFailure, checkoutCartSuccess, loadCart, loadCartFailure, loadCartSuccess } from "./cart.actions";
 import { CartRequest } from "src/app/models/cart-request.model";
 import { selectCartCount, selectCartItems, selectCartTotal } from "./cart.selector";
 import { Store } from "@ngrx/store";
@@ -38,6 +38,20 @@ export class CartEffects {
     })
   )
 );
+
+loadCart$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadCart),
+      mergeMap(() =>
+        this.cartService.getCartItems().pipe(
+          map(items => loadCartSuccess({ items })),
+          catchError(error =>
+            of(loadCartFailure({ error }))
+          )
+        )
+      )
+    )
+  );
 
 
 

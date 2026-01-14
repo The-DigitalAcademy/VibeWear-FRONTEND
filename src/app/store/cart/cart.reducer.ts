@@ -57,5 +57,7 @@ export const cartReducer = createReducer(
       .filter(item => item.quantity > 0); // remove items with 0 quantity
 
     return { ...state, items: updatedItems };
-  })
+  }),
+
+  
 );

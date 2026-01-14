@@ -59,7 +59,7 @@
     <!-- Authentication Buttons -->
     <ng-container>
       <!-- User is NOT logged in -->
-      <ng-container *ngIf="!isAuthenticated$">
+      <ng-container *ngIf="!(isAuthenticated$ | async)">
         <button class="btn btn-outline-primary ms-2" (click)="goToLogin()">
           Login
         </button>
@@ -69,10 +69,10 @@
       </ng-container>
 
       <!-- User IS logged in -->
-      <ng-container *ngIf="isAuthenticated$">
-        <span class="ms-2" *ngIf="user$ | async as user"
-          >Hello, {{ user.username }}</span
-        >
+      <ng-container *ngIf="isAuthenticated$ | async">
+        <span class="ms-2" *ngIf="user$ | async as user">
+          Hello, {{ user.username }}
+        </span>
         <button class="btn btn-danger ms-2" (click)="logout()">Logout</button>
       </ng-container>
     </ng-container>

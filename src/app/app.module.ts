@@ -25,10 +25,10 @@ import { AuthEffects } from './store/auth/auth.effects';
 import { RegisterComponent } from './components/register/register.component';
 import { cartStorageMetaReducer } from './store/meta-reducer/cart-storage.meta-reducer';
 import { CartEffects } from './store/cart/cart.effects';
-
+import { OrdersComponent } from './components/orders/orders.component';
 
 @NgModule({
-  declarations: [AppComponent, FooterComponent, HomeComponent, LoginComponent, RegisterComponent],
+  declarations: [AppComponent, FooterComponent, HomeComponent, LoginComponent, RegisterComponent, OrdersComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

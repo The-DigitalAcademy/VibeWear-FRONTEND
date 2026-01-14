@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { CartItem } from 'src/app/models/cart-item.model';
 import { Product } from 'src/app/models/product.model';
 
 // ADD TO CART
@@ -31,5 +32,17 @@ export const checkoutCartSuccess = createAction(
 
 export const checkoutCartFailure = createAction(
   '[Cart] Checkout Failure',
+  props<{ error: any }>()
+);
+
+export const loadCart = createAction('[Cart] Load Cart');
+
+export const loadCartSuccess = createAction(
+  '[Cart] Load Cart Success',
+  props<{ items: CartItem[] }>()
+);
+
+export const loadCartFailure = createAction(
+  '[Cart] Load Cart Failure',
   props<{ error: any }>()
 );
