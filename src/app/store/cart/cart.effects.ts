@@ -8,7 +8,6 @@ import { selectCartCount, selectCartItems, selectCartTotal } from "./cart.select
 import { Store } from "@ngrx/store";
 import { CartService } from "src/app/services/cart.service";
 
-
 @Injectable()
 export class CartEffects {
   private apiUrl = 'http://localhost:9090/cart/order';
@@ -20,31 +19,42 @@ export class CartEffects {
     private cartService: CartService
   ) {}
 
- checkoutCart$ = createEffect(() =>
-  this.actions$.pipe(
-    ofType(checkoutCart),
-    concatLatestFrom(() => [
-      this.store.select(selectCartCount),
-      this.store.select(selectCartTotal),
-      this.store.select(selectCartItems)
-    ]),
-    switchMap(([, totalItems, totalAmount, items]) => {
-      const payload: CartRequest = { totalItems, totalAmount, items };
-
-      return this.cartService.syncCartTotals(payload).pipe(
-        map(response => checkoutCartSuccess({ response })),
-        catchError(error => of(checkoutCartFailure({ error })))
-      );
-    })
-  )
-);
-
-loadCart$ = createEffect(() =>
+  // Effect to handle cart checkout process
+  checkoutCart$ = createEffect(() =>
     this.actions$.pipe(
+      // Listen for checkout action
+      ofType(checkoutCart),
+      // Get latest cart data from store
+      concatLatestFrom(() => [
+        this.store.select(selectCartCount),
+        this.store.select(selectCartTotal),
+        this.store.select(selectCartItems)
+      ]),
+      // Send cart data to backend
+      switchMap(([, totalItems, totalAmount, items]) => {
+        const payload: CartRequest = { totalItems, totalAmount, items };
+
+        return this.cartService.syncCartTotals(payload).pipe(
+          // Dispatch success action on successful checkout
+          map(response => checkoutCartSuccess({ response })),
+          // Dispatch failure action on error
+          catchError(error => of(checkoutCartFailure({ error })))
+        );
+      })
+    )
+  );
+
+  // Effect to load cart items from backend
+  loadCart$ = createEffect(() =>
+    this.actions$.pipe(
+      // Listen for load cart action
       ofType(loadCart),
+      // Fetch cart items from service
       mergeMap(() =>
         this.cartService.getCartItems().pipe(
+          // Dispatch success action with loaded items
           map(items => loadCartSuccess({ items })),
+          // Dispatch failure action on error
           catchError(error =>
             of(loadCartFailure({ error }))
           )
@@ -52,8 +62,4 @@ loadCart$ = createEffect(() =>
       )
     )
   );
-
-
-
-  
 }

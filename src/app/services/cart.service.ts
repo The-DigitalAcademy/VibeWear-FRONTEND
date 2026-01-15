@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { CartRequest } from "../models/cart-request.model";
 import { Cart } from "../models/cart.model";
 
-//this is interface for Cart item
+// Interface for cart item structure
 export interface CartItem {
   id: number;
   title: string;
@@ -17,11 +17,13 @@ export interface CartItem {
   providedIn: "root",
 })
 export class CartService {
+  // BehaviorSubject to manage cart state
   private cartItems = new BehaviorSubject<CartItem[]>([]);
+  // Observable for components to subscribe to cart changes
   cartItems$ = this.cartItems.asObservable();
 
   constructor(private http: HttpClient) {
-    // Load cart from localStorage on service initialization
+    // Load saved cart from localStorage on initialization
     const savedCart = localStorage.getItem("cart");
     if (savedCart) {
       this.cartItems.next(JSON.parse(savedCart));
@@ -30,29 +32,30 @@ export class CartService {
 
   private apiUrl = "http://localhost:9090/cart/order";
 
-  syncCartTotals(payload: CartRequest): Observable<any> {
-    console.log(payload);
-    return this.http.post(this.apiUrl, payload, { withCredentials: true });
-  }
-
+  // Fetch cart items from backend
   getCartItems(): Observable<CartItem[]> {
     return this.http.get<CartItem[]>("http://localhost:9090/cart/items", {
       withCredentials: true,
     });
   }
 
+  // Fetch grouped cart sessions from backend
   getGroupedCarts(): Observable<Cart[]> {
-    return this.http.get<Cart[]>("http://localhost:9090/cart/sessions", { withCredentials: true });
+    return this.http.get<Cart[]>("http://localhost:9090/cart/sessions", { 
+      withCredentials: true 
+    });
   }
-  
 
+  // Add product to cart or increment quantity if already exists
   addToCart(product: any): void {
     const currentItems = this.cartItems.value;
     const existingItem = currentItems.find((item) => item.id === product.id);
 
     if (existingItem) {
+      // Increment quantity if item already in cart
       existingItem.quantity += 1;
     } else {
+      // Add new item to cart
       currentItems.push({
         id: product.id,
         title: product.title,
@@ -62,10 +65,12 @@ export class CartService {
       });
     }
 
+    // Update cart and persist to localStorage
     this.cartItems.next([...currentItems]);
     this.saveToLocalStorage();
   }
 
+  // Remove item from cart by product ID
   removeFromCart(productId: number): void {
     const currentItems = this.cartItems.value.filter(
       (item) => item.id !== productId
@@ -74,14 +79,17 @@ export class CartService {
     this.saveToLocalStorage();
   }
 
+  // Update quantity of a specific cart item
   updateQuantity(productId: number, quantity: number): void {
     const currentItems = this.cartItems.value;
     const item = currentItems.find((item) => item.id === productId);
 
     if (item) {
       if (quantity <= 0) {
+        // Remove item if quantity is 0 or negative
         this.removeFromCart(productId);
       } else {
+        // Update quantity and persist
         item.quantity = quantity;
         this.cartItems.next([...currentItems]);
         this.saveToLocalStorage();
@@ -89,6 +97,7 @@ export class CartService {
     }
   }
 
+  // Calculate total number of items in cart
   getCartItemCount(): number {
     return this.cartItems.value.reduce(
       (total, item) => total + item.quantity,
@@ -96,6 +105,7 @@ export class CartService {
     );
   }
 
+  // Calculate total price of all items in cart
   getTotalPrice(): number {
     return this.cartItems.value.reduce(
       (total, item) => total + item.price * item.quantity,
@@ -103,12 +113,20 @@ export class CartService {
     );
   }
 
+  // Empty the cart and clear localStorage
   clearCart(): void {
     this.cartItems.next([]);
     localStorage.removeItem("cart");
   }
 
+  // Save current cart state to localStorage
   private saveToLocalStorage(): void {
     localStorage.setItem("cart", JSON.stringify(this.cartItems.value));
+  }
+
+  // Sync cart totals with backend
+  syncCartTotals(payload: CartRequest): Observable<any> {
+    console.log(payload);
+    return this.http.post(this.apiUrl, payload, { withCredentials: true });
   }
 }

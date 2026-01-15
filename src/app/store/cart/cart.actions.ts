@@ -23,8 +23,10 @@ export const updateCartItemQuantity = createAction(
   props<{ productId: number; quantity: number }>()
 );
 
+// CHECKOUT CART
 export const checkoutCart = createAction('[Cart] Checkout');
 
+// CHECKOUT CART SUCCESS & FAILURE
 export const checkoutCartSuccess = createAction(
   '[Cart] Checkout Success',
   props<{ response: any }>()
@@ -35,8 +37,11 @@ export const checkoutCartFailure = createAction(
   props<{ error: any }>()
 );
 
+
+// LOAD CART
 export const loadCart = createAction('[Cart] Load Cart');
 
+// LOAD CART SUCCESS & FAILURE
 export const loadCartSuccess = createAction(
   '[Cart] Load Cart Success',
   props<{ items: CartItem[] }>()
