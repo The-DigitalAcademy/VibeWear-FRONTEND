@@ -1,47 +1,44 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { ProductservService } from '../../services/productserv.service';
-import { CartService } from '../../services/cart.service';
+import { RouterModule, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import * as ProductActions from '../../store/products/product.actions';
+import { selectAllProducts } from '../../store/products/product.selector';
+import { Observable } from 'rxjs';
+import { selectIsAuthenticated } from 'src/app/store/auth/auth.selector';
+import { Product, ProductservService } from 'src/app/services/productserv.service';
+import { addToCart } from 'src/app/store/cart/cart.actions';
 
-import { Router } from '@angular/router';
 @Component({
   selector: 'product-page',
+  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './product-page.component.html',
   styleUrls: ['./product-page.component.css'],
-  standalone: true,
 })
-
-// injected the API from services
 export class ProductPageComponent implements OnInit {
-  products: any[] = [];
+  products$ = this.store.select(selectAllProducts);
+  isAuthenticated$!: Observable<boolean>;
+  products : Product[] = [];
 
   constructor(
-    private productService: ProductservService,
-    private cartService: CartService,
+    private store: Store,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe({
-      next: (data) => {
-        this.products = data;
-      },
-      error: (error) => {
-        console.error('Error fetching products:', error);
-      },
+    this.store.dispatch(ProductActions.loadProducts());
+    this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
+    this.products$.subscribe(products => {
+      this.products = products;
     });
   }
 
-  addToCart(product: any): void {
-    this.cartService.addToCart(product);
-    // Optional: Show toast notification
-    alert(`${product.title} added to cart!`);
+  addToCart(product: Product): void {
+      this.store.dispatch(addToCart({ product }));
   }
 
-  onSelectProduct(productId: Number): void {
-    console.log('Navigating to product ID:', productId);
+  onSelectProduct(productId: number): void {
     this.router.navigate(['products', productId]);
   }
 }

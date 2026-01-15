@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CartService } from 'src/app/services/cart.service';
 import { RouterModule,Router } from '@angular/router';
+import { clearCart } from 'src/app/store/cart/cart.actions';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-check-out-pop-up',
@@ -12,13 +14,17 @@ import { RouterModule,Router } from '@angular/router';
 export class CheckOutPopUpComponent {
   OrderCode = Math.floor(100000 + Math.random() * 900000); // Generate a random 6-digit order code  
 
-  constructor(private cart: CartService ,private router: Router) { } 
+  constructor(private store: Store ,private router: Router) { } 
  
 
  //This will close the pop-up when the user clicks the close button
   ClosePopUp() {
 
     this.router.navigate(['/products']);
-    this.cart.clearCart();
+    this.clearCart();
+    
   } 
+  clearCart(): void {
+      this.store.dispatch(clearCart());
+    }
 }

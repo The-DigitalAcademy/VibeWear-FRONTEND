@@ -4,13 +4,21 @@ import { DescriptionPageComponent } from './components/description-page/descript
 import { HomeComponent } from './components/home/home.component';
 import { ProductPageComponent } from './components/product-page/product-page.component';
 import { CartComponent } from './components/cart/cart.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { AuthGuardsGuard } from './guards/auth-guards.guard';
+import { OrdersComponent } from './components/orders/orders.component';
+
 
 const routes: Routes = [
+  { path: 'login', component: LoginComponent },
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'products', component: ProductPageComponent },
-  { path: 'cart', component: CartComponent },
+  { path: 'cart', component: CartComponent, canActivate: [AuthGuardsGuard] },
+  { path: 'orders', component: OrdersComponent},
   { path: 'products/:id', component: DescriptionPageComponent },
+  { path: "register", component: RegisterComponent },
   { path: '**', redirectTo: '' },
 ];
 

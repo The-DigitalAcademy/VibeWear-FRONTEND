@@ -1,16 +1,33 @@
-import { createAction } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
+import { User } from '../../models/user.model';
 
-// REGISTER ACTIONS
-export const RegisterAction = createAction('[Auth Component] Register');
-export const RegisterSuccessAction = createAction('[Auth Component] Register Success');
-export const RegisterFailureAction = createAction('[Auth Component] Register Failure');
+// REGISTER
+export const registerAction = createAction(
+  '[Auth] Register',
+  props<{ user: Omit<User, 'id'> }>()
+);
+export const registerSuccess = createAction(
+  '[Auth] Register Success',
+  props<{ user: User; successMessage: string }>()
+);
+export const registerFailure = createAction(
+  '[Auth] Register Failure',
+  props<{ errorMessage: string }>()
+);
 
-// LOGIN ACTIONS
-export const LoginAction = createAction('[Auth Component] Login');
-export const LoginSuccessAction = createAction('[Auth Component] Login Success');
-export const LoginFailureAction = createAction('[Auth Component] Login Failure');
+// LOGIN
+export const loginAction = createAction(
+  '[Auth] Login',
+  props<{ email: string; password: string; returnUrl: string }>()
+);
+export const loginSuccess = createAction(
+  '[Auth] Login Success',
+  props<{ user: User; successMessage: string; returnUrl: string }>()
+);
+export const loginFailure = createAction(
+  '[Auth] Login Failure',
+  props<{ errorMessage: string }>()
+);
 
-// LOGOUT ACTIONS
-export const LogoutAction = createAction('[Auth Component] Logout');
-export const LogoutSuccessAction = createAction('[Auth Component] Logout Success');
-export const LogoutFailureAction = createAction('[Auth Component] Logout Failure');
+// LOGOUT
+export const logoutAction = createAction('[Auth] Logout');

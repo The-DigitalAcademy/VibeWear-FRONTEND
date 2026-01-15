@@ -1,0 +1,28 @@
+
+<div class="auth-container">
+  <div class="auth-box">
+    <h1>Welcome Back</h1>
+    <p>Login to continue</p>
+    
+    <div *ngIf="error$ | async as error" class="error-message">
+      {{ error }}
+    </div>
+    
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <input type="email" placeholder="Email" formControlName="email" />
+      <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="error">
+        Please enter a valid email
+      </div>
+      
+      <input type="password" placeholder="Password" formControlName="password" />
+      <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error">
+        Password must be at least 5 characters
+      </div>
+      
+      <button type="submit" [disabled]="loginForm.invalid">Login</button>
+      
+    </form>
+    
+    <p class="switch">Don't have an account? <a routerLink="/register">Register</a></p>
+  </div>
+</div>
